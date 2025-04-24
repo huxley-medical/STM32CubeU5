@@ -320,7 +320,7 @@
                 </option>
                 <option>
                     <name>CCRequirePrototypes</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCDiagWarnAreErr</name>
@@ -1106,6 +1106,12 @@
                 <name>$PROJ_DIR$\..\Src\tx_initialize_low_level.S</name>
             </file>
         </group>
+    </group>
+    <group>
+        <name>Doc</name>
+        <file>
+            <name>$PROJ_DIR$\..\README.md</name>
+        </file>
     </group>
     <group>
         <name>Drivers</name>

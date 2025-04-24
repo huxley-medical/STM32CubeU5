@@ -42,10 +42,12 @@
 
 /* Private variables ---------------------------------------------------------*/
 
+SD_HandleTypeDef hsd1;
+
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-BSP_SD_CardInfo               USBD_SD_CardInfo;
+HAL_SD_CardInfoTypeDef                     USBD_SD_CardInfo;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -54,6 +56,7 @@ static void SystemPower_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_GPDMA1_Init(void);
 static void MX_ICACHE_Init(void);
+static void MX_SDMMC1_SD_Init(void);
 static void MX_UCPD1_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -70,6 +73,7 @@ static void MX_UCPD1_Init(void);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
   UINT status;
   /* USER CODE END 1 */
@@ -90,18 +94,6 @@ int main(void)
   SystemPower_Config();
 
   /* USER CODE BEGIN SysInit */
-  BSP_SD_Init(SD_INSTANCE);
-  while(BSP_SD_IsDetected(SD_INSTANCE) == SD_NOT_PRESENT)
-  {
-  }
-
-  /* Get SD card info */
-  status = BSP_SD_GetCardInfo(SD_INSTANCE, &USBD_SD_CardInfo);
-
-  if (status != BSP_ERROR_NONE)
-  {
-    Error_Handler();
-  }
 
   /* USER CODE END SysInit */
 
@@ -109,16 +101,29 @@ int main(void)
   MX_GPIO_Init();
   MX_GPDMA1_Init();
   MX_ICACHE_Init();
+  MX_SDMMC1_SD_Init();
   MX_UCPD1_Init();
   /* Call PreOsInit function */
   USBPD_PreInitOs();
   /* USER CODE BEGIN 2 */
+  /* Check if SD card is present */
+  if(HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_0) == GPIO_PIN_RESET)
+  {
+    Error_Handler();
+  }
+  /* Get SD card info */
+  status = HAL_SD_GetCardInfo(&hsd1, &USBD_SD_CardInfo);
 
+  if (status != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE END 2 */
 
   MX_ThreadX_Init();
 
   /* We should never get here as control is now taken by the scheduler */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -277,6 +282,37 @@ static void MX_ICACHE_Init(void)
   /* USER CODE BEGIN ICACHE_Init 2 */
 
   /* USER CODE END ICACHE_Init 2 */
+
+}
+
+/**
+  * @brief SDMMC1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SDMMC1_SD_Init(void)
+{
+
+  /* USER CODE BEGIN SDMMC1_Init 0 */
+
+  /* USER CODE END SDMMC1_Init 0 */
+
+  /* USER CODE BEGIN SDMMC1_Init 1 */
+
+  /* USER CODE END SDMMC1_Init 1 */
+  hsd1.Instance = SDMMC1;
+  hsd1.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
+  hsd1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
+  hsd1.Init.BusWide = SDMMC_BUS_WIDE_4B;
+  hsd1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
+  hsd1.Init.ClockDiv = 0;
+  if (HAL_SD_Init(&hsd1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SDMMC1_Init 2 */
+
+  /* USER CODE END SDMMC1_Init 2 */
 
 }
 
@@ -516,6 +552,10 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* Infinite loop */
+  while (1)
+  {
+  }
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

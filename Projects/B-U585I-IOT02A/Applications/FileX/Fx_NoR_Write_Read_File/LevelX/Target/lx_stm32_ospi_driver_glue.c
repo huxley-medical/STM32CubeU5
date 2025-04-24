@@ -204,9 +204,7 @@ INT lx_stm32_ospi_get_info(UINT instance, ULONG *block_size, ULONG *total_blocks
   /* USER CODE END PRE_OSPI_GET_INFO */
 
   *block_size = LX_STM32_OSPI_SECTOR_SIZE;
-
-  *total_blocks = (LX_STM32_OSPI_FLASH_SIZE / LX_STM32_OSPI_SECTOR_SIZE);
-
+  *total_blocks = ((LX_STM32_OSPI_FLASH_SIZE - LX_STM32_OSPI_BASE_ADDRESS) / LX_STM32_OSPI_SECTOR_SIZE);
   /* USER CODE BEGIN POST_OSPI_GET_INFO */
 
   /* USER CODE END POST_OSPI_GET_INFO */
@@ -542,6 +540,7 @@ static uint8_t ospi_memory_reset(OSPI_HandleTypeDef *hospi)
 
   /* Configure automatic polling mode to wait the memory is ready */
   s_command.Instruction  = LX_STM32_OSPI_OCTAL_READ_STATUS_REG_CMD;
+  s_command.InstructionSize = HAL_OSPI_INSTRUCTION_16_BITS;
   s_command.DataMode     = HAL_OSPI_DATA_1_LINE;
   s_command.NbData       = 1;
   s_command.DataDtrMode  = HAL_OSPI_DATA_DTR_DISABLE;

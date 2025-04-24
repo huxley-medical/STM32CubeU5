@@ -12,26 +12,24 @@
   *           - Setup behavior of Floating Point Unit
   *           - Setup Interrupt Target
   *
-  ******************************************************************************/
-/*
-  * Copyright (c) 2009-2016 ARM Limited. All rights reserved.
-  * Portions Copyright (c) 2021 STMicroelectronics, all rights reserved
+  ******************************************************************************
+  * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
+  * Copyright (c) 2023 STMicroelectronics. All rights reserved.  
   *
   * SPDX-License-Identifier: Apache-2.0
-
   *
- * Licensed under the Apache License, Version 2.0 (the License); you may
- * not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+  * Licensed under the Apache License, Version 2.0 (the License); you may
+  * not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
   *
- * http://www.apache.org/licenses/LICENSE-2.0
-   *
-
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an AS IS BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  ******************************************************************************
  */
 /* USER CODE END Header */
 
@@ -452,7 +450,7 @@
 //   <o.27> SPI1_IRQn             <0=> Secure state
 //   <o.28> SPI2_IRQn             <0=> Secure state
 //   <o.29> USART1_IRQn           <0=> Secure state
-//   <o.30> USART2_IRQn           <0=> Secure state
+
 //   <o.31> USART3_IRQn           <0=> Secure state
 */
 
@@ -478,8 +476,9 @@
 //   <o.6>  TIM16_IRQn            <0=> Secure state
 //   <o.7>  TIM17_IRQn            <0=> Secure state
 //   <o.8>  COMP_IRQn             <0=> Secure state
+//   <o.9>  USB_IRQn              <0=> Secure state
 //   <o.10> CRS_IRQn              <0=> Secure state
-//   <o.11> FMC_IRQn              <0=> Secure state
+
 //   <o.12> OCTOSPI1_IRQn         <0=> Secure state
 //   <o.13> PWR_S3WU_IRQn         <0=> Secure state
 

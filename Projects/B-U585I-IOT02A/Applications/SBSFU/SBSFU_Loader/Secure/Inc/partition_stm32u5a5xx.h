@@ -11,24 +11,24 @@
   *           - Setup behavior of Floating Point Unit
   *           - Setup Interrupt Target
   *
-  ******************************************************************************/
-/*
- * Copyright (c) 2009-2016 ARM Limited. All rights reserved.
- * Portions Copyright (c) 2021 STMicroelectronics, all rights reserved
- *
- * SPDX-License-Identifier: Apache-2.0
+  ******************************************************************************
+  * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
+  * Copyright (c) 2023 STMicroelectronics. All rights reserved.  
   *
- * Licensed under the Apache License, Version 2.0 (the License); you may
- * not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+  * SPDX-License-Identifier: Apache-2.0
   *
- * http://www.apache.org/licenses/LICENSE-2.0
+  * Licensed under the Apache License, Version 2.0 (the License); you may
+  * not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
   *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an AS IS BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  ******************************************************************************
  */
 
 #ifndef PARTITION_STM32U5XXXX_H
@@ -548,10 +548,6 @@
 */
 #define NVIC_INIT_ITNS3_VAL      0xFFFFFFFF
 
-#if defined (STM32U595xx) || defined (STM32U599xx) \
- || defined (STM32U5A5xx) || defined (STM32U5A9xx) \
- || defined (STM32U5F9xx) || defined (STM32U5G9xx) \
- || defined (STM32U5G7xx)
 /*
 //   <e>Initialize ITNS 4 (Interrupts 109..138)
 */
@@ -573,7 +569,6 @@
 /*
 // </h>
 */
-#endif
 
 /*
 //   </e>
@@ -684,14 +679,10 @@ __STATIC_INLINE void TZ_SAU_Setup (void)
   #if defined (NVIC_INIT_ITNS3) && (NVIC_INIT_ITNS3 == 1U)
     NVIC->ITNS[3] = NVIC_INIT_ITNS3_VAL;
   #endif
-#if defined (STM32U595xx) || defined (STM32U599xx) \
- || defined (STM32U5A5xx) || defined (STM32U5A9xx) \
- || defined (STM32U5F9xx) || defined (STM32U5G9xx) \
- || defined (STM32U5G7xx)
+
   #if defined (NVIC_INIT_ITNS4) && (NVIC_INIT_ITNS4 == 1U)
     NVIC->ITNS[4] = NVIC_INIT_ITNS4_VAL;
   #endif
-#endif
 }
 
 #endif  /* PARTITION_STM32U5XXXX_H */

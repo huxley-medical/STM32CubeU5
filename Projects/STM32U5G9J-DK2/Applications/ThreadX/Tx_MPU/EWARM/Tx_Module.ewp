@@ -321,7 +321,7 @@
                 </option>
                 <option>
                     <name>CCRequirePrototypes</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCDiagWarnAreErr</name>
@@ -1083,6 +1083,12 @@
                 <name>$PROJ_DIR$\..\Src\txm_module_preamble.s</name>
             </file>
         </group>
+    </group>
+    <group>
+        <name>Doc</name>
+        <file>
+            <name>$PROJ_DIR$\..\README.md</name>
+        </file>
     </group>
     <group>
         <name>Middlewares</name>

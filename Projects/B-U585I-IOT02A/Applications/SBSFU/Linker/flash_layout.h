@@ -67,7 +67,7 @@
  * sw binary. Each FLASH_AREA_IMAGE contains two partitions. See Flash layout
  * above.
  */
-#define LOADER_FLASH_DEV_NAME             TFM_Driver_FLASH0
+#define LOADER_FLASH_DEV_NAME             Driver_FLASH0
 
 /* Flash layout info for BL2 bootloader */
 #define FLASH_AREA_IMAGE_SECTOR_SIZE    (0x2000)     /* 8 KB */
@@ -78,7 +78,7 @@
 #elif defined (STM32U595xx) || defined (STM32U599xx) \
    || defined (STM32U5A5xx) || defined (STM32U5A9xx) \
    || defined (STM32U5F9xx) || defined (STM32U5G9xx) \
-   || defined (STM32U5G7xx)
+   || defined (STM32U5G7xx) || defined (STM32U5F7xx)
 #define FLASH_B_SIZE                    (0x200000)   /* 2 MBytes*/
 #else
 #error "No STM32U5 version Defined"
@@ -179,7 +179,7 @@
 #elif defined (STM32U595xx) || defined (STM32U599xx) \
    || defined (STM32U5A5xx) || defined (STM32U5A9xx) \
    || defined (STM32U5F9xx) || defined (STM32U5G9xx) \
-   || defined (STM32U5G7xx)
+   || defined (STM32U5G7xx) || defined (STM32U5F7xx)
 #define FLASH_NS_PARTITION_SIZE         (0x128000) /* 1184 KB for NS partition */
 #endif
 #else
@@ -190,7 +190,7 @@
 #elif defined (STM32U595xx) || defined (STM32U599xx) \
    || defined (STM32U5A5xx) || defined (STM32U5A9xx) \
    || defined (STM32U5F9xx) || defined (STM32U5G9xx) \
-   || defined (STM32U5G7xx)
+   || defined (STM32U5G7xx) || defined (STM32U5F7xx)
 #define FLASH_NS_PARTITION_SIZE         (0x2F0000) /* 3,08 MB for NS partition */
 #endif
 
@@ -367,8 +367,12 @@
 /*
  * The maximum number of status entries supported by the bootloader.
  */
-#define MCUBOOT_STATUS_MAX_ENTRIES         ((FLASH_MAX_PARTITION_SIZE) / \
-                                            FLASH_AREA_SCRATCH_SIZE)
+#if defined(MCUBOOT_OVERWRITE_ONLY)
+#define MCUBOOT_STATUS_MAX_ENTRIES        (0)
+#else /* not MCUBOOT_OVERWRITE_ONLY */
+#define MCUBOOT_STATUS_MAX_ENTRIES        (((FLASH_MAX_PARTITION_SIZE - 1) / \
+                                            FLASH_AREA_SCRATCH_SIZE) + 1)
+#endif /* MCUBOOT_OVERWRITE_ONLY */
 /* Maximum number of image sectors supported by the bootloader. */
 #define MCUBOOT_MAX_IMG_SECTORS           ((FLASH_MAX_PARTITION_SIZE) / \
                                            FLASH_AREA_IMAGE_SECTOR_SIZE)
@@ -385,19 +389,19 @@
  */
 #if !defined(MCUBOOT_OVERWRITE_ONLY) && (MCUBOOT_APP_IMAGE_NUMBER == 2)
 /* Flash Driver Used to Confirm Secure App Image */
-#define  FLASH_PRIMARY_SECURE_DEV_NAME             TFM_Driver_FLASH0
+#define  FLASH_PRIMARY_SECURE_DEV_NAME             Driver_FLASH0
 #endif /* !defined(MCUBOOT_OVERWRITE_ONLY) && (MCUBOOT_APP_IMAGE_NUMBER == 2) */
 /* Flash Driver Used to Confirm NonSecure App Image or MCUBOOT_APP_IMAGE_NUMBER = 1 */
-#define  FLASH_PRIMARY_NONSECURE_DEV_NAME          TFM_Driver_FLASH0
+#define  FLASH_PRIMARY_NONSECURE_DEV_NAME          Driver_FLASH0
 #if !defined(MCUBOOT_OVERWRITE_ONLY) && (MCUBOOT_S_DATA_IMAGE_NUMBER == 1)
 /* Flash Driver Used to Confirm Secure Data Image */
-#define  FLASH_PRIMARY_DATA_SECURE_DEV_NAME        TFM_Driver_FLASH0
+#define  FLASH_PRIMARY_DATA_SECURE_DEV_NAME        Driver_FLASH0
 #endif /* !defined(MCUBOOT_OVERWRITE_ONLY) && (MCUBOOT_S_DATA_IMAGE_NUMBER == 1) */
 #if !defined(MCUBOOT_OVERWRITE_ONLY) && (MCUBOOT_NS_DATA_IMAGE_NUMBER == 1)
 /* Flash Driver Used to Confirm NonSecure Data Image */
-#define  FLASH_PRIMARY_DATA_NONSECURE_DEV_NAME     TFM_Driver_FLASH0
+#define  FLASH_PRIMARY_DATA_NONSECURE_DEV_NAME     Driver_FLASH0
 #endif /* !defined(MCUBOOT_OVERWRITE_ONLY) && (MCUBOOT_S_DATA_IMAGE_NUMBER == 1) */
-#define FLASH_DEV_NAME                             TFM_Driver_FLASH0
+#define FLASH_DEV_NAME                             Driver_FLASH0
 
 
 /* BL2 NV Counters definitions  */

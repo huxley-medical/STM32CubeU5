@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  *
  * Copyright (c) 2019 JUUL Labs
+ * Copyright (c) 2023 STMicroelectronics
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,7 +119,12 @@ swap_read_status_bytes(const struct flash_area *fap,
             return BOOT_EFLASH;
         }
 
+#ifdef MCUBOOT_USE_MCE
+        if (bootutil_buffer_is_erased(fap->fa_off + off + i * BOOT_WRITE_SZ(state),
+                                      fap, &status, 1)) {
+#else /* not MCUBOOT_USE_MCE */
         if (bootutil_buffer_is_erased(fap, &status, 1)) {
+#endif /* MCUBOOT_USE_MCE */
             if (found && !found_idx) {
                 found_idx = i;
             }
@@ -174,6 +180,22 @@ boot_status_internal_off(const struct boot_status *bs, int elem_sz)
  * area, and have sizes that are a multiple of each other (powers of two
  * presumably!).
  */
+#if defined(MCUBOOT_FLASH_HOMOGENOUS) && !defined(MCUBOOT_OVERWRITE_ONLY)
+int
+boot_slots_compatible(struct boot_loader_state *state)
+{
+  size_t primary_sz, secondary_sz;
+  size_t scratch_sz;
+  primary_sz = BOOT_IMG_AREA(state, BOOT_PRIMARY_SLOT)->fa_size;
+  secondary_sz = BOOT_IMG_AREA(state, BOOT_SECONDARY_SLOT)->fa_size;
+  scratch_sz = boot_scratch_area_size(state);
+  if ((primary_sz != secondary_sz) || (primary_sz > (scratch_sz * BOOT_STATUS_MAX_ENTRIES))) {
+    BOOT_LOG_WRN("Cannot upgrade: more swap than trailer status size");
+    return 0;
+  }
+  return 1;
+}
+#else
 int
 boot_slots_compatible(struct boot_loader_state *state)
 {
@@ -263,6 +285,7 @@ boot_slots_compatible(struct boot_loader_state *state)
 
     return 1;
 }
+#endif /* MCUBOOT_FLASH_HOMOGENOUS and not MCUBOOT_OVERWRITE_ONLY */
 
 #define BOOT_LOG_SWAP_STATE(area, state)                            \
     BOOT_LOG_INF("%s: magic=%s, swap_type=0x%x, copy_done=0x%x, "   \
@@ -715,14 +738,24 @@ swap_run(struct boot_loader_state *state, struct boot_status *bs,
         last_idx_secondary_slot++;
     }
 
+#if defined(__ICCARM__)
     BOOT_LOG_INF("Swapping secondary and primary slots: 0x%x bytes", copy_size);
+#else /* __ICCARM__ */
+    BOOT_LOG_INF("Swapping secondary and primary slots: 0x%lx bytes", (long unsigned int)copy_size);
+#endif /* __ICCARM__ */
 
     swap_idx = 0;
     while (last_sector_idx >= 0) {
         sz = boot_copy_sz(state, last_sector_idx, &first_sector_idx);
         if (swap_idx >= (bs->idx - BOOT_STATUS_IDX_0)) {
+#if defined(__ICCARM__)
             BOOT_LOG_INF("Swapping: swap index 0x%x, sector index 0x%x, size 0x%x",
                          swap_idx, first_sector_idx, sz);
+#else /* __ICCARM__ */
+            BOOT_LOG_INF("Swapping: swap index 0x%lx, sector index 0x%lx, size 0x%lx",
+                         (long unsigned int)swap_idx, (long unsigned int)first_sector_idx,
+                         (long unsigned int)sz);
+#endif /* __ICCARM__ */
             boot_swap_sectors(first_sector_idx, sz, state, bs);
         }
 

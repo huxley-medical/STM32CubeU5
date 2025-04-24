@@ -16,8 +16,8 @@
         <TargetCommonOption>
           <Device>STM32U5G9ZJTxQ</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32U5Fx-5Gx_DFP.0.0.1</PackID>
-          <PackURL>http://www.keil.com/pack</PackURL>
+          <PackID>Keil.STM32U5xx_DFP.2.2.4</PackID>
+          <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x0C0000) IRAM2(0x30000000,0x0C0000) IROM(0x08000000,0x00400000) IROM2(0x0C000000,0x00400000) CPUTYPE("Cortex-M33") FPU3(SFPU) DSP TZ CLOCK(12000000) ESEL ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -1679,11 +1679,6 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Middlewares\ST\threadx\common_modules\module_manager\src\txm_module_manager_kernel_dispatch.c</FilePath>
             </File>
-            <File>
-              <FileName>tx_thread_stack_error_notify.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\Middlewares\ST\threadx\common\src\tx_thread_stack_error_notify.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -2838,8 +2833,8 @@
         <TargetCommonOption>
           <Device>STM32U5G9ZJTxQ</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32U5Fx-5Gx_DFP.0.0.1</PackID>
-          <PackURL>http://www.keil.com/pack</PackURL>
+          <PackID>Keil.STM32U5xx_DFP.2.2.4</PackID>
+          <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x0C0000) IRAM2(0x30000000,0x0C0000) IROM(0x08000000,0x00400000) IROM2(0x0C000000,0x00400000) CPUTYPE("Cortex-M33") FPU3(SFPU) DSP TZ CLOCK(12000000) ESEL ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -3162,7 +3157,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32U5F9xx,TX_SINGLE_MODE_NON_SECURE,TXM_MODULE_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Common/Inc;../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../Middlewares/ST/threadx/common_modules/inc/;../../../../../../Middlewares/ST/threadx/common_modules/module_manager/inc/;../../../../../../Middlewares/ST/threadx/ports_module/cortex_m33/ac6/inc/;../../../../../../Drivers/STM32U5xx_HAL_Driver/Inc;../../../../../../Drivers/STM32U5xx_HAL_Driver/Inc/Legacy;../../../../../../Drivers/CMSIS/Device/ST/STM32U5xx/Include;../../../../../../Drivers/CMSIS/Include;../../../../../../Drivers/BSP/STM32U5x9J-DK</IncludePath>
+              <IncludePath>../Inc;../Common/Inc;../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../Middlewares/ST/threadx/common_modules/inc/;../../../../../../Middlewares/ST/threadx/common_modules/module_manager/inc/;../../../../../../Middlewares/ST/threadx/ports_module/cortex_m33/ac6/inc/;../../../../../../Drivers/STM32U5xx_HAL_Driver/Inc;../../../../../../Drivers/STM32U5xx_HAL_Driver/Inc/Legacy;../../../../../../Drivers/CMSIS/Device/ST/STM32U5xx/Include;../../../../../../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -4035,57 +4030,6 @@
               <FileName>tx_thread_stack_error_notify.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Middlewares\ST\threadx\common\src\tx_thread_stack_error_notify.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
             </File>
           </Files>
         </Group>
@@ -4306,11 +4250,6 @@
               <FileName>txm_module_manager_kernel_dispatch.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Middlewares\ST\threadx\common_modules\module_manager\src\txm_module_manager_kernel_dispatch.c</FilePath>
-            </File>
-            <File>
-              <FileName>tx_thread_stack_error_notify.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\Middlewares\ST\threadx\common\src\tx_thread_stack_error_notify.c</FilePath>
             </File>
           </Files>
         </Group>

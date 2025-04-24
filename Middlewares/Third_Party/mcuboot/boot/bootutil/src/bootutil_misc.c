@@ -4,6 +4,7 @@
  * Copyright (c) 2017-2019 Linaro LTD
  * Copyright (c) 2016-2019 JUUL Labs
  * Copyright (c) 2019-2020 Arm Limited
+ * Copyright (c) 2023 STMicroelectronics
  *
  * Original license:
  *
@@ -40,6 +41,9 @@
 #ifdef MCUBOOT_ENC_IMAGES
 #include "bootutil/enc_key.h"
 #endif
+#ifdef MCUBOOT_USE_MCE
+#include "boot_hal_mce.h"
+#endif /* MCUBOOT_USE_MCE */
 
 MCUBOOT_LOG_MODULE_DECLARE(mcuboot);
 #if !defined(MCUBOOT_PRIMARY_ONLY)
@@ -219,8 +223,10 @@ boot_trailer_sz(uint32_t min_write_sz)
            /* swap_type + swap_size */
            BOOT_MAX_ALIGN * 2                     +
 #endif
+#if !defined(MCUBOOT_PRIMARY_ONLY)
            /* copy_done + image_ok */
            BOOT_MAX_ALIGN * 2                     +
+#endif /* MCUBOOT_PRIMARY_ONLY */
            BOOT_MAGIC_SZ;
 }
 
@@ -296,6 +302,33 @@ boot_enc_key_off(const struct flash_area *fap, uint8_t slot)
 }
 #endif
 
+#ifdef MCUBOOT_USE_MCE
+bool bootutil_buffer_is_erased(uint32_t off,
+                               const struct flash_area *area,
+                               const void *buffer, size_t len)
+{
+    size_t i;
+    uint8_t *u8b;
+    uint8_t erased_val;
+
+    if (buffer == NULL || len == 0) {
+        return false;
+    }
+
+    erased_val = flash_area_erased_val(area);
+    if (boot_is_in_primary(area->fa_id, off, len)) {
+        return boot_is_in_primary_and_erased(area->fa_id, off, len, erased_val);
+    } else {
+        for (i = 0, u8b = (uint8_t *)buffer; i < len; i++) {
+            if (u8b[i] != erased_val) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+#else /* not MCUBOOT_USE_MCE */
 bool bootutil_buffer_is_erased(const struct flash_area *area,
                                const void *buffer, size_t len)
 {
@@ -316,6 +349,7 @@ bool bootutil_buffer_is_erased(const struct flash_area *area,
 
     return true;
 }
+#endif /* MCUBOOT_USE_MCE */
 
 int
 boot_read_swap_state(const struct flash_area *fap,
@@ -331,7 +365,11 @@ boot_read_swap_state(const struct flash_area *fap,
     if (rc < 0) {
         return BOOT_EFLASH;
     }
+#ifdef MCUBOOT_USE_MCE
+    if (bootutil_buffer_is_erased(fap->fa_off + off, fap, magic, BOOT_MAGIC_SZ)) {
+#else /* not MCUBOOT_USE_MCE */
     if (bootutil_buffer_is_erased(fap, magic, BOOT_MAGIC_SZ)) {
+#endif /* MCUBOOT_USE_MCE */
         state->magic = BOOT_MAGIC_UNSET;
     } else {
         state->magic = boot_magic_decode(magic);
@@ -347,7 +385,11 @@ boot_read_swap_state(const struct flash_area *fap,
     state->swap_type = BOOT_GET_SWAP_TYPE(swap_info);
     state->image_num = BOOT_GET_IMAGE_NUM(swap_info);
 
+#ifdef MCUBOOT_USE_MCE
+    if (bootutil_buffer_is_erased(fap->fa_off + off, fap, &swap_info, sizeof swap_info) ||
+#else /* not MCUBOOT_USE_MCE */
     if (bootutil_buffer_is_erased(fap, &swap_info, sizeof swap_info) ||
+#endif /* MCUBOOT_USE_MCE */
             state->swap_type > BOOT_SWAP_TYPE_REVERT) {
         state->swap_type = BOOT_SWAP_TYPE_NONE;
         state->image_num = 0;
@@ -358,8 +400,14 @@ boot_read_swap_state(const struct flash_area *fap,
     if (rc < 0) {
         return BOOT_EFLASH;
     }
+#ifdef MCUBOOT_USE_MCE
+    if (bootutil_buffer_is_erased(fap->fa_off + off,
+                                  fap, &state->copy_done,
+                                  sizeof state->copy_done)) {
+#else /* not MCUBOOT_USE_MCE */
     if (bootutil_buffer_is_erased(fap, &state->copy_done,
                 sizeof state->copy_done)) {
+#endif /* MCUBOOT_USE_MCE */
         state->copy_done = BOOT_FLAG_UNSET;
     } else {
         state->copy_done = boot_flag_decode(state->copy_done);
@@ -370,8 +418,14 @@ boot_read_swap_state(const struct flash_area *fap,
     if (rc < 0) {
         return BOOT_EFLASH;
     }
+#ifdef MCUBOOT_USE_MCE
+    if (bootutil_buffer_is_erased(fap->fa_off + off,
+                                  fap, &state->image_ok,
+                                  sizeof state->image_ok)) {
+#else /* MCUBOOT_USE_MCE */
     if (bootutil_buffer_is_erased(fap, &state->image_ok,
                 sizeof state->image_ok)) {
+#endif /* MCUBOOT_USE_MCE */
         state->image_ok = BOOT_FLAG_UNSET;
     } else {
         state->image_ok = boot_flag_decode(state->image_ok);

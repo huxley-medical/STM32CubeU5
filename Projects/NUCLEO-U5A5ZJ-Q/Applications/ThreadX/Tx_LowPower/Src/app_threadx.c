@@ -42,8 +42,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-  TX_THREAD tx_app_thread;
-  TX_SEMAPHORE tx_app_semaphore;
+TX_THREAD tx_app_thread;
+TX_SEMAPHORE tx_app_semaphore;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -69,7 +69,7 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
   /* USER CODE BEGIN App_ThreadX_MEM_POOL */
 
   /* USER CODE END App_ThreadX_MEM_POOL */
-CHAR *pointer;
+  CHAR *pointer;
 
   /* Allocate the stack for Main Thread  */
   if (tx_byte_allocate(byte_pool, (VOID**) &pointer,
@@ -77,7 +77,7 @@ CHAR *pointer;
   {
     return TX_POOL_ERROR;
   }
-   /* Create Main Thread.  */
+  /* Create Main Thread.  */
   if (tx_thread_create(&tx_app_thread, "Main Thread", MainThread_Entry, 0, pointer,
                        TX_APP_STACK_SIZE, TX_APP_THREAD_PRIO, TX_APP_THREAD_PREEMPTION_THRESHOLD,
                        TX_APP_THREAD_TIME_SLICE, TX_APP_THREAD_AUTO_START) != TX_SUCCESS)
@@ -98,13 +98,13 @@ CHAR *pointer;
 }
 /**
   * @brief  Function implementing the MainThread_Entry thread.
-  * @param  thread_input: Not used.
+  * @param  thread_input: Hardcoded to 0.
   * @retval None
   */
 void MainThread_Entry(ULONG thread_input)
 {
   /* USER CODE BEGIN MainThread_Entry */
-(void) thread_input;
+  (void) thread_input;
   UINT i = 0;
   /* Infinite loop */
   while (1)
@@ -123,7 +123,7 @@ void MainThread_Entry(ULONG thread_input)
 }
 
   /**
-  * @brief  MX_ThreadX_Init
+  * @brief  Function that implements the kernel's initialization.
   * @param  None
   * @retval None
   */
@@ -138,18 +138,6 @@ void MX_ThreadX_Init(void)
   /* USER CODE BEGIN  Kernel_Start_Error */
 
   /* USER CODE END  Kernel_Start_Error */
-}
-
-/**
-  * @brief  App_ThreadX_LowPower_Timer_Setup
-  * @param  count : TX timer count
-  * @retval None
-  */
-void App_ThreadX_LowPower_Timer_Setup(ULONG count)
-{
-  /* USER CODE BEGIN  App_ThreadX_LowPower_Timer_Setup */
-
-  /* USER CODE END  App_ThreadX_LowPower_Timer_Setup */
 }
 
 /**
@@ -174,18 +162,6 @@ void App_ThreadX_LowPower_Exit(void)
   /* USER CODE BEGIN  App_ThreadX_LowPower_Exit */
   Exit_LowPower_Mode();
   /* USER CODE END  App_ThreadX_LowPower_Exit */
-}
-
-/**
-  * @brief  App_ThreadX_LowPower_Timer_Adjust
-  * @param  None
-  * @retval Amount of time (in ticks)
-  */
-ULONG App_ThreadX_LowPower_Timer_Adjust(void)
-{
-  /* USER CODE BEGIN  App_ThreadX_LowPower_Timer_Adjust */
-  return 0;
-  /* USER CODE END  App_ThreadX_LowPower_Timer_Adjust */
 }
 
 /* USER CODE BEGIN 1 */
@@ -258,17 +234,11 @@ void SystemClock_Restore(void)
   */
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
-  ULONG currentValue = 0;
   if (GPIO_Pin == BUTTON_USER_Pin)
   {
-    /* Add additional checks to avoid multiple semaphore puts by successively
-    clicking on the user button */
-    tx_semaphore_info_get(&tx_app_semaphore, NULL, &currentValue, NULL, NULL, NULL);
-    if (currentValue == 0)
-    {
-      /* Put the semaphore to release the MainThread */
-      tx_semaphore_put(&tx_app_semaphore);
-    }
+      /* Put the semaphore to release the MainThread and specify ceiling to 1 to avoid 
+      multiple semaphore puts by successively clicking on the user button */
+      tx_semaphore_ceiling_put(&tx_app_semaphore,1); 
   }
 }
 

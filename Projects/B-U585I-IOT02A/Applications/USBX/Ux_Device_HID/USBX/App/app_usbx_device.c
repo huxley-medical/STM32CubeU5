@@ -42,7 +42,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-
 static ULONG hid_mouse_interface_number;
 static ULONG hid_mouse_configuration_number;
 static UX_SLAVE_CLASS_HID_PARAMETER hid_mouse_parameter;
@@ -139,7 +138,7 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   hid_mouse_parameter.ux_slave_class_hid_instance_deactivate       = USBD_HID_Mouse_Deactivate;
   hid_mouse_parameter.ux_device_class_hid_parameter_report_address = USBD_HID_ReportDesc(INTERFACE_HID_MOUSE);
   hid_mouse_parameter.ux_device_class_hid_parameter_report_length  = USBD_HID_ReportDesc_length(INTERFACE_HID_MOUSE);
-  hid_mouse_parameter.ux_device_class_hid_parameter_report_id      = UX_TRUE;
+  hid_mouse_parameter.ux_device_class_hid_parameter_report_id      = UX_FALSE;
   hid_mouse_parameter.ux_device_class_hid_parameter_callback       = USBD_HID_Mouse_SetReport;
   hid_mouse_parameter.ux_device_class_hid_parameter_get_callback   = USBD_HID_Mouse_GetReport;
 
@@ -187,14 +186,14 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
 
   /* USER CODE BEGIN MX_USBX_Device_Init1 */
 
-  /* Allocate the stack for usbx_hid_thread_entry.  */
+  /* Allocate the stack for hid mouse thread */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
                        UX_DEVICE_APP_THREAD_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
 
-  /* Create the usbx_hid_thread_entry thread. */
+  /* Create the hid mouse thread */
   if (tx_thread_create(&ux_hid_thread, "hid_usbx_app_thread_entry",
                        usbx_hid_thread_entry, 1,
                        pointer, UX_DEVICE_APP_THREAD_STACK_SIZE, 20, 20,
@@ -284,8 +283,8 @@ VOID USBX_APP_Device_Init(VOID)
 
   /* USER CODE BEGIN USB_Device_Init_PreTreatment_1 */
   HAL_PCDEx_SetRxFiFo(&hpcd_USB_OTG_FS, 0x80);
-  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_FS, 0, 0x40);
-  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_FS, 1, 0x40);
+  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_FS, 0, USBD_MAX_EP0_SIZE / 4);
+  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_FS, 1, USBD_HID_MOUSE_EPIN_FS_MPS / 4);
   /* USER CODE END USB_Device_Init_PreTreatment_1 */
 
   /* initialize the device controller driver*/
@@ -305,7 +304,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
 
   /* Check if EXTI from User Button */
-  if (GPIO_Pin == GPIO_PIN_13)
+  if (GPIO_Pin == BUTTON_USER_Pin)
   {
     User_Button_State ^= 1U;
   }

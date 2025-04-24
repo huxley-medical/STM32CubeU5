@@ -3,6 +3,7 @@
  *
  * Copyright (c) 2016-2019 JUUL Labs
  * Copyright (c) 2017 Linaro LTD
+ * Copyright (c) 2023 STMicroelectronics
  *
  * Original license:
  *
@@ -35,6 +36,12 @@
 #endif
 
 #include "bootutil/sign_key.h"
+
+#if !defined(MBEDTLS_CONFIG_FILE)
+#include "mbedtls/mbedtls_config.h"
+#else
+#include MBEDTLS_CONFIG_FILE
+#endif
 
 #include "mbedtls/oid.h"
 #include "mbedtls/asn1.h"

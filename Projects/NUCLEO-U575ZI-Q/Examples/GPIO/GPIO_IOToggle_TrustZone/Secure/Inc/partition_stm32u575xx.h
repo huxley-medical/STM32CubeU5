@@ -12,26 +12,24 @@
   *           - Setup behavior of Floating Point Unit
   *           - Setup Interrupt Target
   *
-  ******************************************************************************/
-/*
-  * Copyright (c) 2009-2016 ARM Limited. All rights reserved.
-  * Portions Copyright (c) 2021 STMicroelectronics, all rights reserved
+  ******************************************************************************
+  * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
+  * Copyright (c) 2023 STMicroelectronics. All rights reserved.  
   *
   * SPDX-License-Identifier: Apache-2.0
-
   *
- * Licensed under the Apache License, Version 2.0 (the License); you may
- * not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+  * Licensed under the Apache License, Version 2.0 (the License); you may
+  * not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
   *
- * http://www.apache.org/licenses/LICENSE-2.0
-   *
-
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an AS IS BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  ******************************************************************************
  */
 /* USER CODE END Header */
 
@@ -407,7 +405,6 @@
 //   <o.25> EXTI14_IRQn           <0=> Secure state
 //   <o.26> EXTI15_IRQn           <0=> Secure state
 //   <o.27> IWDG_IRQn             <0=> Secure state
-//   <o.28> SAES_IRQn             <0=> Secure state
 //   <o.29> GPDMA1_Channel0_IRQn  <0=> Secure state
 //   <o.30> GPDMA1_Channel1_IRQn  <0=> Secure state
 //   <o.31> GPDMA1_Channel2_IRQn  <0=> Secure state
@@ -502,7 +499,6 @@
 //   <o.26> SAI1_IRQn             <0=> Secure state
 //   <o.27> SAI2_IRQn             <0=> Secure state
 //   <o.28> TSC_IRQn              <0=> Secure state
-//   <o.29> AES_IRQn              <0=> Secure state
 
 //   <o.30> RNG_IRQn              <0=> Secure state
 //   <o.31> FPU_IRQn              <0=> Secure state

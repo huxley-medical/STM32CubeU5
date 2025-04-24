@@ -46,7 +46,7 @@ extern "C" {
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
-#define USBX_DEVICE_MEMORY_STACK_SIZE       4*1024
+#define USBX_DEVICE_MEMORY_STACK_SIZE     4*1024
 
 #define UX_DEVICE_APP_THREAD_STACK_SIZE   1024
 #define UX_DEVICE_APP_THREAD_PRIO         10
@@ -71,6 +71,7 @@ VOID USBX_APP_Device_Init(VOID);
 /* USER CODE BEGIN PD */
 #define APP_QUEUE_SIZE          1
 /* USER CODE END PD */
+
 #ifndef UX_DEVICE_APP_THREAD_NAME
 #define UX_DEVICE_APP_THREAD_NAME  "USBX Device App Main Thread"
 #endif

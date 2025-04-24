@@ -35,10 +35,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "main.h"
-#include "ux_system.h"
-#include "ux_utility.h"
-#include "ux_device_stack.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -72,6 +69,7 @@ VOID USBX_APP_Device_Init(VOID);
 /* USER CODE BEGIN PD */
 #define APP_QUEUE_SIZE                               5
 /* USER CODE END PD */
+
 #ifndef UX_DEVICE_APP_THREAD_NAME
 #define UX_DEVICE_APP_THREAD_NAME  "USBX Device App Main Thread"
 #endif
